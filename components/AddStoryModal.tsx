@@ -17,6 +17,10 @@ export default function AddStoryModal({ lat, lng, onClose, onSaved }: Props) {
   const [error, setError] = useState('')
 
   const handleSubmit = async () => {
+    if (!supabase) {
+      setError('Configuration missing: Supabase environment variables are not set.')
+      return
+    }
     if (!title.trim() || !country.trim() || !content.trim() || !author.trim()) {
       setError('Please fill in all fields.')
       return

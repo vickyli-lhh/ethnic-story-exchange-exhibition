@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { supabase, Story, PRESET_MARKERS } from '../lib/supabase'
+import { supabase, hasSupabaseEnv, Story, PRESET_MARKERS } from '../lib/supabase'
 import StorySidebar from './StorySidebar'
 import AddStoryModal from './AddStoryModal'
 
@@ -71,6 +71,7 @@ export default function WorldMap() {
 
   // Fetch all stories
   const fetchStories = useCallback(async () => {
+    if (!supabase) return
     const { data } = await supabase
       .from('stories')
       .select('*')
@@ -79,6 +80,20 @@ export default function WorldMap() {
   }, [])
 
   useEffect(() => { fetchStories() }, [fetchStories])
+
+  if (!hasSupabaseEnv) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: 24, background: '#f5f0e8', color: '#1a1410' }}>
+        <div style={{ maxWidth: 680, width: '100%', background: '#fffdf8', border: '1px solid #d4cbbf', borderRadius: 12, padding: 24 }}>
+          <h1 style={{ marginBottom: 12, fontSize: '1.2rem' }}>Configuration Error</h1>
+          <p style={{ marginBottom: 8 }}>This site is missing required Supabase environment variables.</p>
+          <p style={{ marginBottom: 0, fontFamily: 'monospace', fontSize: '0.9rem' }}>
+            Required: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   // Render markers on map
   useEffect(() => {

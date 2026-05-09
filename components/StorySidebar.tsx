@@ -33,6 +33,7 @@ export default function StorySidebar({ isOpen, stories, locationLabel, onClose }
   }, [selectedStory])
 
   const loadComments = async (storyId: string) => {
+    if (!supabase) return
     setLoadingComments(true)
     const { data } = await supabase
       .from('comments')
@@ -44,6 +45,7 @@ export default function StorySidebar({ isOpen, stories, locationLabel, onClose }
   }
 
   const submitComment = async () => {
+    if (!supabase) return
     if (!selectedStory || !nickname.trim() || !commentText.trim()) return
     setSubmitting(true)
     await supabase.from('comments').insert({
