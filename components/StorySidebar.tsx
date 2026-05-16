@@ -9,10 +9,11 @@ type Props = {
   isOpen: boolean
   stories: Story[]
   locationLabel: string
+  locationDescription?: string
   onClose: () => void
 }
 
-export default function StorySidebar({ isOpen, stories, locationLabel, onClose }: Props) {
+export default function StorySidebar({ isOpen, stories, locationLabel, locationDescription, onClose }: Props) {
   const [selectedStory, setSelectedStory] = useState<Story | null>(null)
   const [comments, setComments] = useState<Comment[]>([])
   const [loadingComments, setLoadingComments] = useState(false)
@@ -94,6 +95,16 @@ export default function StorySidebar({ isOpen, stories, locationLabel, onClose }
 
       {/* Body */}
       <div className="sidebar-body">
+        {/* Location description */}
+        {!selectedStory && locationDescription ? (
+          <div
+            className="sidebar-description"
+            style={{ whiteSpace: 'pre-line', padding: '20px 24px 0', color: 'var(--muted)', fontSize: '0.95rem', lineHeight: 1.7 }}
+          >
+            {locationDescription}
+          </div>
+        ) : null}
+
         {/* Story list */}
         {!selectedStory && (
           <>

@@ -14,6 +14,7 @@ type ClickedLocation = {
   label: string
   stories: Story[]
   isPreset: boolean
+  description?: string
 }
 
 export default function WorldMap() {
@@ -128,7 +129,7 @@ export default function WorldMap() {
         const nearby = allStories.filter(s =>
           Math.abs(s.lat - pm.lat) < 5 && Math.abs(s.lng - pm.lng) < 10
         )
-        setClickedLocation({ lat: pm.lat, lng: pm.lng, label: pm.label, stories: nearby, isPreset: true })
+        setClickedLocation({ lat: pm.lat, lng: pm.lng, label: pm.label, stories: nearby, isPreset: true, description: pm.description })
         setSidebarOpen(true)
       })
       markersRef.current.set(`preset-${pm.id}`, marker)
@@ -182,7 +183,7 @@ export default function WorldMap() {
         const nearby = allStories.filter(s =>
           Math.abs(s.lat - pm.lat) < 5 && Math.abs(s.lng - pm.lng) < 10
         )
-        setClickedLocation({ lat: pm.lat, lng: pm.lng, label: pm.label, stories: nearby, isPreset: true })
+        setClickedLocation({ lat: pm.lat, lng: pm.lng, label: pm.label, stories: nearby, isPreset: true, description: pm.description })
         setSidebarOpen(true)
       })
     })
@@ -229,6 +230,7 @@ export default function WorldMap() {
         isOpen={sidebarOpen}
         stories={clickedLocation?.stories || []}
         locationLabel={clickedLocation?.label || ''}
+        locationDescription={clickedLocation?.description}
         onClose={() => setSidebarOpen(false)}
       />
 
